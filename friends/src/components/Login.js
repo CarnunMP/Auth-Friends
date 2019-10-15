@@ -1,14 +1,28 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
+import axios from "axios";
 
 export default function Login(props) {
     const { loginFormValues } = props;
+
+    const onSubmit = formValues => {   
+        axios.post("http:///localhost:5000/api/login", formValues)
+            .then(res => {
+                localStorage.setItem("token", res.data.payload);
+                debugger
+                props.history.push("/friends");
+            })
+            .catch(err => {
+                debugger
+                alert(err.response.data.error);
+            })
+    };
 
     return (
         <div className="login-form">
             <Formik 
                 initialValues={loginFormValues}
-                onSubmit={(props) => console.log(props)}
+                onSubmit={onSubmit}
                 render={props => {
                     return (
                         <Form>

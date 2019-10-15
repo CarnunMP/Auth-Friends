@@ -20,8 +20,8 @@ export default class App extends React.Component {
       <div className="App">
         <Route 
           exact path="/" 
-          render={() => 
-            <Login loginFormValues={this.state.loginFormValues} />} 
+          render={(props) => 
+            <Login {...props} loginFormValues={this.state.loginFormValues} />} 
         />
       </div>
     ) 
