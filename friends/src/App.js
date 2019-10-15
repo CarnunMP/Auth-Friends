@@ -19,6 +19,7 @@ export default class App extends React.Component {
       friendsList: [],
     }
     this.addNewFriend = this.addNewFriend.bind(this);
+    this.removeFriend = this.removeFriend.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +49,19 @@ export default class App extends React.Component {
         .catch(err => {
             debugger
         });
-};
+  }
+
+  removeFriend(id) {
+    withAuth().delete(`http:///localhost:5000/api/friends/${id}`)
+    .then(res => {
+        this.setState({
+          friendsList: res.data,
+        })
+    })
+    .catch(err => {
+      debugger
+    });
+  }
 
   render() {
     return (
@@ -68,7 +81,12 @@ export default class App extends React.Component {
           render={props => 
             <>
               <NewFriendForm addNewFriend={this.addNewFriend}/>
-              <FriendsList {...props} friendsList={this.state.friendsList} authCheck={this.authCheck} />
+              <FriendsList 
+                {...props} 
+                friendsList={this.state.friendsList}
+                authCheck={this.authCheck}
+                removeFriend={this.removeFriend} 
+              />
             </>
           }
         />
