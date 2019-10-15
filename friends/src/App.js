@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { Route, NavLink } from "react-router-dom";
 
 import Login from "./components/Login";
 import FriendsList from './components/FriendsList';
+
+import withAuth from "./axios";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,31 +15,25 @@ export default class App extends React.Component {
         username: "",
         password: "",
       },
-      friendsList: [
-        {
-          id: 1,
-          name: 'Ben',
-          age: 30,
-          email: 'ben@lambdaschool.com'
-        },
-        {
-          id: 2,
-          name: 'Austen',
-          age: 45,
-          email: 'austen@lambdaschool.com'
-        },
-        {
-          id: 3,
-          name: 'Ryan',
-          age: 15,
-          email: 'ryan@lambdaschool.com'
-        },
-      ],
+      friendsList: [],
     }
+  }
+
+  componentDidMount() {
+    withAuth().get("http://localhost:5000/api/friends")
+      .then(res => {
+        this.setState({
+          friendsList: res.data,
+        });
+      })
+      .catch(err => {
+        debugger
+      });
   }
 
   authCheck() {
     return localStorage.getItem("token") !== null;
+    // Not very secure! :P
   }
 
   render() {
