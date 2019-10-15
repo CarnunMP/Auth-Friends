@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import withAuth from "../axios";
 
 export default function FriendsList(props) {
     const { friendsList, removeFriend, authCheck } = props;

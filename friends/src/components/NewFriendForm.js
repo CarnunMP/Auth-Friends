@@ -1,6 +1,5 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import withAuth from "../axios";
 
 export default function NewFriendForm(props) {
     const initialValues = {

@@ -18,19 +18,23 @@ export default class App extends React.Component {
       },
       friendsList: [],
     }
+
+    this.history = props.history;
+    
     this.addNewFriend = this.addNewFriend.bind(this);
     this.removeFriend = this.removeFriend.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentDidMount() {
-    withAuth().get("http://localhost:5000/api/friends")
+      withAuth().get("http://localhost:5000/api/friends")
       .then(res => {
         this.setState({
           friendsList: res.data,
         });
       })
       .catch(err => {
-        debugger
+        alert(err.response.data.error);
       });
   }
 
@@ -47,7 +51,7 @@ export default class App extends React.Component {
             });
         })
         .catch(err => {
-            debugger
+            alert(err.response.data.error);
         });
   }
 
@@ -59,8 +63,13 @@ export default class App extends React.Component {
         })
     })
     .catch(err => {
-      debugger
+      alert(err.response.data.error);
     });
+  }
+
+  logOut() {
+    localStorage.removeItem("token");
+    this.history.push("/");
   }
 
   render() {
@@ -90,6 +99,7 @@ export default class App extends React.Component {
             </>
           }
         />
+        <button onClick={this.logOut}>Log Out</button>
       </div>
     ) 
   }

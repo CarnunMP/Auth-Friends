@@ -5,7 +5,7 @@ import axios from "axios";
 export default function Login(props) {
     const { loginFormValues } = props;
 
-    const onSubmit = formValues => {   
+    const onSubmit = formValues => {
         axios.post("http:///localhost:5000/api/login", formValues)
             .then(res => {
                 localStorage.setItem("token", res.data.payload);
