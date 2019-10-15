@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { Route, NavLink } from "react-router-dom";
 
 import Login from "./components/Login";
 import FriendsList from './components/FriendsList';
+import NewFriendForm from './components/NewFriendForm';
 
 import withAuth from "./axios";
 
@@ -17,6 +18,7 @@ export default class App extends React.Component {
       },
       friendsList: [],
     }
+    this.addNewFriend = this.addNewFriend.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +38,18 @@ export default class App extends React.Component {
     // Not very secure! :P
   }
 
+  addNewFriend(formValues) {
+    withAuth().post("http:///localhost:5000/api/friends", formValues)
+        .then(res => {
+            this.setState({
+              friendsList: res.data,
+            });
+        })
+        .catch(err => {
+            debugger
+        });
+};
+
   render() {
     return (
       <div className="App">
@@ -52,7 +66,10 @@ export default class App extends React.Component {
         <Route
           path="/friends"
           render={props => 
-            <FriendsList {...props} friendsList={this.state.friendsList} authCheck={this.authCheck} />
+            <>
+              <NewFriendForm addNewFriend={this.addNewFriend}/>
+              <FriendsList {...props} friendsList={this.state.friendsList} authCheck={this.authCheck} />
+            </>
           }
         />
       </div>
