@@ -9,11 +9,9 @@ export default function Login(props) {
         axios.post("http:///localhost:5000/api/login", formValues)
             .then(res => {
                 localStorage.setItem("token", res.data.payload);
-                debugger
                 props.history.push("/friends");
             })
             .catch(err => {
-                debugger
                 alert(err.response.data.error);
             })
     };
